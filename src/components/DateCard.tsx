@@ -1,5 +1,4 @@
 import { Card, CardContent, Typography, IconButton, Box } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete'; // Need to check if icons are installed
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
