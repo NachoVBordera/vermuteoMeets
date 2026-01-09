@@ -26,17 +26,21 @@ export const CreateMeeting = () => {
         }
     };
 
-    const handleCreate = () => {
+    const handleCreate = async () => {
         if (!title.trim() || selectedDates.length === 0) return;
 
         // Convert dates to ISO strings
         const dateStrings = selectedDates.map(d => d.toISOString());
 
         // Create meeting
-        const meeting = meetingStorage.createMeeting(title, dateStrings);
+        const meeting = await meetingStorage.createMeeting(title, dateStrings);
 
-        // Navigate
-        navigate(`/m/${meeting.id}`);
+        if (meeting) {
+            // Navigate
+            navigate(`/m/${meeting.id}`);
+        } else {
+            alert('Vaites! Houbo un erro ao crear o encontro. Inténtao de novo.');
+        }
     };
 
     const removeDate = (dateToRemove: Date) => {

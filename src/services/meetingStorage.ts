@@ -1,52 +1,70 @@
+import { supabase } from './supabase';
 import type { Meeting, Vote, TimeSlot } from '../models/Meeting';
 
-const MEETING_KEY = 'vermuteo_meetings';
 const USER_NAME_KEY = 'vermuteo_user_name';
 
 export const meetingStorage = {
-    createMeeting: (title: string, dates: string[]): Meeting => {
+    // Create a new meeting in Supabase
+    createMeeting: async (title: string, dates: string[]): Promise<Meeting | null> => {
         const id = crypto.randomUUID();
         const newMeeting: Meeting = { id, title, dates, votes: [] };
 
-        const stored = localStorage.getItem(MEETING_KEY);
-        const meetings: Meeting[] = stored ? JSON.parse(stored) : [];
-        meetings.push(newMeeting);
-        localStorage.setItem(MEETING_KEY, JSON.stringify(meetings));
+        const { error } = await supabase
+            .from('meetings')
+            .insert([{ id, data: newMeeting }]);
+
+        if (error) {
+            console.error('Erro ao crear o encontro en Supabase:', error);
+            return null;
+        }
 
         return newMeeting;
     },
 
-    getMeeting: (id: string): Meeting | undefined => {
-        const stored = localStorage.getItem(MEETING_KEY);
-        if (!stored) return undefined;
-        const meetings: Meeting[] = JSON.parse(stored);
-        return meetings.find(m => m.id === id);
+    // Get a meeting from Supabase by ID
+    getMeeting: async (id: string): Promise<Meeting | undefined> => {
+        const { data, error } = await supabase
+            .from('meetings')
+            .select('data')
+            .eq('id', id)
+            .single();
+
+        if (error || !data) {
+            console.error('Erro ao obter o encontro:', error);
+            return undefined;
+        }
+
+        return data.data as Meeting;
     },
 
-    saveVote: (meetingId: string, userName: string, slots: TimeSlot[]) => {
-        const stored = localStorage.getItem(MEETING_KEY);
-        if (!stored) return;
-
-        const meetings: Meeting[] = JSON.parse(stored);
-        const meeting = meetings.find(m => m.id === meetingId);
-
+    // Save a vote to Supabase
+    saveVote: async (meetingId: string, userName: string, slots: TimeSlot[]) => {
+        // 1. Get current meeting data
+        const meeting = await meetingStorage.getMeeting(meetingId);
         if (!meeting) return;
 
-        // Remove previous vote from this user if exists
-        meeting.votes = meeting.votes.filter(v => v.userName !== userName);
-
-        // Add new vote
-        const newVote: Vote = {
+        // 2. Update votes array
+        const updatedVotes = (meeting.votes || []).filter(v => v.userName !== userName);
+        updatedVotes.push({
             userName,
             slots,
             votedAt: new Date().toISOString()
-        };
-        meeting.votes.push(newVote);
+        });
 
-        // Save back
-        localStorage.setItem(MEETING_KEY, JSON.stringify(meetings));
+        const updatedMeeting = { ...meeting, votes: updatedVotes };
 
-        // Remember user name for this browser
+        // 3. Update in Supabase
+        const { error } = await supabase
+            .from('meetings')
+            .update({ data: updatedMeeting })
+            .eq('id', meetingId);
+
+        if (error) {
+            console.error('Erro ao gardar o voto:', error);
+            return;
+        }
+
+        // Remember user name locally
         localStorage.setItem(USER_NAME_KEY, userName);
     },
 
@@ -54,24 +72,9 @@ export const meetingStorage = {
         return localStorage.getItem(USER_NAME_KEY);
     },
 
-    getMyVote: (meetingId: string): Vote | undefined => {
-        const userName = meetingStorage.getUserName();
-        if (!userName) return undefined;
-
-        const meeting = meetingStorage.getMeeting(meetingId);
-        if (!meeting) return undefined;
-
-        return meeting.votes.find(v => v.userName === userName);
-    },
-
-    getAllVotes: (meetingId: string): Vote[] => {
-        const meeting = meetingStorage.getMeeting(meetingId);
-        return meeting?.votes || [];
-    },
-
-    // Get vote count for a specific slot
-    getSlotVoteCount: (meetingId: string, day: string, hour: number): number => {
-        const votes = meetingStorage.getAllVotes(meetingId);
+    // These are now helpers that work with the data already fetched in the component
+    getSlotVoteCount: (meeting: Meeting, day: string, hour: number): number => {
+        const votes = meeting.votes || [];
         return votes.filter(vote =>
             vote.slots.some(slot => slot.day === day && slot.hour === hour)
         ).length;
