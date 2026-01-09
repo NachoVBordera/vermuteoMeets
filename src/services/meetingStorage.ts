@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import type { Meeting, Vote, TimeSlot } from '../models/Meeting';
+import type { Meeting, TimeSlot } from '../models/Meeting';
 
 const USER_NAME_KEY = 'vermuteo_user_name';
 
