@@ -269,18 +269,8 @@ export const MeetingPage = () => {
                         ))}
                     </Box>
                 </Box>
-
-                <Alert severity="info" sx={{ mb: 2 }}>
-                    <Typography variant="body2" fontWeight="bold" gutterBottom>
-                        Quen votou:
-                    </Typography>
-                    <Typography variant="body2">
-                        {meeting.votes.map(v => v.userName).join(', ')}
-                    </Typography>
-                </Alert>
-
                 {/* Footer Actions */}
-                <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, p: 2, maxWidth: '430px', margin: '0 auto', display: 'flex', gap: 1, flexDirection: 'column' }}>
+                <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, p: 2, maxWidth: '430px', margin: '0 auto', display: 'flex', gap: 1, flexDirection: 'column', zIndex: 1 }}>
                     <PrimaryButton label="Editar o meu voto" onClick={handleEditVote} />
                     <PrimaryButton label="Copiar ligazón" onClick={copyLink} sx={{ bgcolor: 'secondary.main' }} />
                 </Paper>
