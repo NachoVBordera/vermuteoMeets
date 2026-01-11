@@ -3,13 +3,14 @@ import { createTheme } from '@mui/material/styles';
 export const theme = createTheme({
     palette: {
         primary: {
-            main: '#FF4500', // Vermuteo color? Orange/Red. Let's pick a vibrant one.
+            main: '#000000',
         },
         secondary: {
             main: '#2E2E2E',
         },
         background: {
-            default: '#f5f5f5',
+            default: '#ffffff',
+            paper: '#ffffff',
         },
     },
     typography: {
@@ -21,8 +22,8 @@ export const theme = createTheme({
         MuiButton: {
             styleOverrides: {
                 root: {
-                    minHeight: '48px', // Requirement: min 44px
-                    borderRadius: '12px',
+                    minHeight: '48px',
+                    borderRadius: 0,
                     textTransform: 'none',
                     fontSize: '1rem',
                     fontWeight: 600,
@@ -35,8 +36,9 @@ export const theme = createTheme({
         MuiCard: {
             styleOverrides: {
                 root: {
-                    borderRadius: '16px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                    borderRadius: 0,
+                    boxShadow: 'none',
+                    border: '1px solid #000000',
                 },
             },
         },

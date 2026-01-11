@@ -1,0 +1,18 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Calendar Grid Background -->
+  <rect x="25" y="40" width="50" height="30" rx="0" fill="#F0F4F8" />
+  <path d="M40 40V70 M60 40V70 M25 50H75 M25 60H75" stroke="#CED4DA" stroke-width="1" stroke-linecap="round"/>
+  
+  <!-- Glass Stem/Base -->
+  <path d="M50 85V60 M38 85H62" stroke="#000000" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Glass Bowl (Triangle) -->
+  <path d="M25 30L50 60L75 30H25Z" fill="white" stroke="#000000" stroke-width="3" stroke-linejoin="round"/>
+  
+  <!-- Vermouth Liquid -->
+  <path d="M30 36L50 60L70 36H30Z" fill="#333333"/>
+  
+  <!-- Olive / Pin -->
+  <circle cx="58" cy="42" r="6" fill="#000000" />
+  <path d="M68 28L52 50" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
+</svg>

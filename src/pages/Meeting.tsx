@@ -176,7 +176,7 @@ export const MeetingPage = () => {
                         Resultados de dispoñibilidade ({totalVotes} {totalVotes === 1 ? 'voto' : 'votos'})
                     </Typography>
                 </Box>
-                <Box sx={{ flexGrow: 1, overflow: 'auto', border: '1px solid #e0e0e0', borderRadius: 2, bgcolor: 'white', mb: 2 }}>
+                <Box sx={{ flexGrow: 1, overflow: 'auto', border: '1px solid #000000', borderRadius: 0, bgcolor: 'white', mb: 2 }}>
                     <Box sx={{ display: 'grid', gridTemplateColumns: `50px repeat(${meeting.dates.length}, 100px)`, minWidth: 'fit-content' }}>
                         <Box sx={{ position: 'sticky', left: 0, bgcolor: 'white', zIndex: 2 }} />
                         {meeting.dates.map(dateStr => (
@@ -197,7 +197,7 @@ export const MeetingPage = () => {
                                     const intensity = getSlotIntensity(dateStr, hour);
                                     const isMyVote = mySlots.some(s => s.day === dateStr && s.hour === hour);
                                     return (
-                                        <Box key={`${dateStr}-${hour}`} sx={{ borderRight: '1px solid #f0f0f0', borderBottom: '1px solid #f0f0f0', height: '50px', bgcolor: voteCount > 0 ? `rgba(255, 69, 0, ${0.2 + intensity * 0.8})` : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', border: isMyVote ? '2px solid #FF4500' : undefined }}>
+                                        <Box key={`${dateStr}-${hour}`} sx={{ borderRight: '1px solid #f0f0f0', borderBottom: '1px solid #f0f0f0', height: '50px', bgcolor: voteCount > 0 ? `rgba(0, 0, 0, ${0.1 + intensity * 0.7})` : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', border: isMyVote ? '2px solid #000000' : undefined }}>
                                             {voteCount > 0 && <Typography variant="caption" sx={{ color: intensity > 0.5 ? 'white' : 'text.primary', fontWeight: 'bold' }}>{voteCount}</Typography>}
                                         </Box>
                                     );
@@ -206,15 +206,18 @@ export const MeetingPage = () => {
                         ))}
                     </Box>
                 </Box>
-                <Alert severity="info" sx={{ mb: 2 }}>
-                    <Typography variant="body2" fontWeight="bold" gutterBottom>Quen votou:</Typography>
-                    <Typography variant="body2">{meeting.votes.map(v => v.userName).join(', ')}</Typography>
-                </Alert>
-                <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, p: 2, maxWidth: '430px', margin: '0 auto', display: 'flex', gap: 1, flexDirection: 'column', zIndex: 10 }}>
+                <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, p: 2, maxWidth: '400px', margin: '0 auto', display: 'flex', gap: 1, flexDirection: 'column', zIndex: 10, borderRadius: 0 }}>
                     <PrimaryButton label="Editar o meu voto" onClick={handleEditVote} />
                     <PrimaryButton label="Copiar ligazón" onClick={copyLink} sx={{ bgcolor: 'secondary.main' }} />
                 </Paper>
-                <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={() => setSnackbarOpen(false)} message="Ligazón copiada" anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} sx={{ bottom: { xs: 140 } }} />
+                <Snackbar
+                    open={snackbarOpen}
+                    autoHideDuration={2000}
+                    onClose={() => setSnackbarOpen(false)}
+                    message="Ligazón copiada"
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                    sx={{ bottom: { xs: 150, sm: 150 } }}
+                />
             </Box>
         );
     }
@@ -230,7 +233,7 @@ export const MeetingPage = () => {
                 </Typography>
                 {userName && <Typography variant="caption" color="primary">Votando como: {userName}</Typography>}
             </Box>
-            <Box sx={{ flexGrow: 1, overflow: 'auto', border: '1px solid #e0e0e0', borderRadius: 2, bgcolor: 'white' }}>
+            <Box sx={{ flexGrow: 1, overflow: 'auto', border: '1px solid #000000', borderRadius: 0, bgcolor: 'white' }}>
                 <Box sx={{ display: 'grid', gridTemplateColumns: `50px repeat(${meeting.dates.length}, 100px)`, minWidth: 'fit-content' }}>
                     <Box sx={{ position: 'sticky', left: 0, bgcolor: 'white', zIndex: 2 }} />
                     {meeting.dates.map(dateStr => (
@@ -256,9 +259,18 @@ export const MeetingPage = () => {
                     ))}
                 </Box>
             </Box>
-            <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, p: 2, maxWidth: '430px', margin: '0 auto', zIndex: 10 }}>
+            <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, p: 2, maxWidth: '400px', margin: '0 auto', display: 'flex', gap: 1, flexDirection: 'column', zIndex: 10 }}>
                 <PrimaryButton label={hasVoted ? "Actualizar o meu voto" : "Gardar o meu voto"} onClick={handleSaveVoteClick} disabled={tempSlots.length === 0} />
+                <PrimaryButton label="Copiar ligazón" onClick={copyLink} sx={{ bgcolor: 'secondary.main' }} />
             </Paper>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={2000}
+                onClose={() => setSnackbarOpen(false)}
+                message="Ligazón copiada"
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                sx={{ bottom: { xs: 150, sm: 150 } }}
+            />
         </Box>
     );
 };

@@ -10,19 +10,22 @@
 body {
   margin: 0;
   display: flex;
-  place-items: center; /* Center horizontally */
+  place-items: center;
+  /* Center horizontally */
   min-height: 100vh;
   justify-content: center;
-  background-color: #e0e0e0; /* Background outside app */
+  background-color: #e0e0e0;
+  /* Background outside app */
 }
 
 #root {
   width: 100%;
-  max-width: 430px; /* Mobile constraint */
+  max-width: 430px;
+  /* Mobile constraint */
   background-color: #ffffff;
   min-height: 100vh;
   position: relative;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }

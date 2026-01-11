@@ -62,7 +62,7 @@ export const CreateMeeting = () => {
                     variant="outlined"
                 />
 
-                <Box sx={{ bgcolor: 'white', borderRadius: 2, boxShadow: 1, overflow: 'hidden' }}>
+                <Box sx={{ bgcolor: 'white', borderRadius: 0, border: '1px solid #000000', overflow: 'hidden' }}>
                     <Typography variant="subtitle2" sx={{ p: 2, pb: 1 }}>
                         Selecciona posibles días (toca para engadir/quitar)
                     </Typography>
@@ -131,7 +131,7 @@ export const CreateMeeting = () => {
                 p: 2,
                 bgcolor: 'white',
                 borderTop: '1px solid #eee',
-                maxWidth: '430px',
+                maxWidth: '400px',
                 margin: '0 auto'
             }}>
                 <PrimaryButton
