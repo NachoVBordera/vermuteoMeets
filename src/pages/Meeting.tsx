@@ -240,7 +240,7 @@ export const MeetingPage = () => {
 
     // Voting view
     return (
-        <Box sx={{ p: 2, height: '100dvh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <Box sx={{ p: 2, pb: 24, display: 'flex', flexDirection: 'column' }}>
             {nameDialog}
             <Box sx={{ mb: 2 }}>
                 <Typography variant="h5" fontWeight="bold">{meeting.title}</Typography>
@@ -268,7 +268,7 @@ export const MeetingPage = () => {
                             {meeting.dates.map(dateStr => {
                                 const isSelected = tempSlots.some(s => s.day === dateStr && s.hour === hour);
                                 return (
-                                    <Box key={`${dateStr}-${hour}`} onClick={() => handleToggleSlot(dateStr, hour)} sx={{ borderRight: '1px solid #f0f0f0', borderBottom: '1px solid #f0f0f0', height: '50px', bgcolor: isSelected ? 'primary.main' : 'transparent', transition: 'background-color 0.2s', cursor: 'pointer', '&:active': { opacity: 0.7 } }} />
+                                    <Box key={`${dateStr}-${hour}`} onClick={() => handleToggleSlot(dateStr, hour)} sx={{ borderRight: '1px solid #f0f0f0', borderBottom: '1px solid #f0f0f0', height: '60px', bgcolor: isSelected ? 'primary.main' : 'transparent', transition: 'background-color 0.2s', cursor: 'pointer', '&:active': { opacity: 0.7 } }} />
                                 );
                             })}
                         </Box>
@@ -276,15 +276,19 @@ export const MeetingPage = () => {
                 </Box>
             </Box>
             <Paper sx={{
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                right: 0,
                 p: 2,
-                mt: 'auto',
                 maxWidth: '400px',
                 width: '100%',
-                margin: '16px auto 0',
+                margin: '0 auto',
                 display: 'flex',
                 gap: 1,
                 flexDirection: 'column',
-                bgcolor: 'white',
+                bgcolor: 'rgba(255, 255, 255, 0.9)',
+                backdropFilter: 'blur(4px)',
                 borderTop: '1px solid #eee',
                 zIndex: 10
             }}>
