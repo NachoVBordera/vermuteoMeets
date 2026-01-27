@@ -153,9 +153,6 @@ export const MeetingPage = () => {
                     <Typography variant="h5" gutterBottom>✓ Grazas por votar, {userName}!</Typography>
                     <Typography variant="body1">A túa dispoñibilidade gardouse</Typography>
                 </Alert>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
-                    Comparte a ligazón cos teus amigos para que tamén voten
-                </Typography>
                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <PrimaryButton label="Ver resultados" onClick={handleViewResults} />
                     <PrimaryButton label="Copiar ligazón" onClick={copyLink} sx={{ bgcolor: 'secondary.main' }} />
