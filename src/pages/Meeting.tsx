@@ -7,7 +7,7 @@ import type { Meeting, TimeSlot } from '../models/Meeting';
 import { meetingStorage } from '../services/meetingStorage';
 import { PrimaryButton } from '../components/PrimaryButton';
 
-const HOURS = Array.from({ length: 15 }, (_, i) => i + 8); // 08:00 to 22:00
+const HOURS = Array.from({ length: 17 }, (_, i) => i + 8); // 08:00 to 00:00 (24:00)
 
 export const MeetingPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -169,7 +169,7 @@ export const MeetingPage = () => {
     if (viewMode === 'results') {
         const totalVotes = meeting.votes.length;
         return (
-            <Box sx={{ p: 2, pb: 20 }}>
+            <Box sx={{ p: 2, pb: 20, minHeight: '100dvh' }}>
                 <Box sx={{ mb: 2 }}>
                     <Typography variant="h5" fontWeight="bold">{meeting.title}</Typography>
                     <Typography variant="body2" color="text.secondary">
@@ -190,7 +190,7 @@ export const MeetingPage = () => {
                         {HOURS.map(hour => (
                             <Box key={`row-${hour}`} sx={{ display: 'contents' }}>
                                 <Box sx={{ position: 'sticky', left: 0, bgcolor: 'white', p: 1, borderRight: '1px solid #eee', borderBottom: '1px solid #eee', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
-                                    <Typography variant="caption" color="text.secondary">{hour}:00</Typography>
+                                    <Typography variant="caption" color="text.secondary">{hour === 24 ? '00' : hour}:00</Typography>
                                 </Box>
                                 {meeting.dates.map(dateStr => {
                                     const voteCount = meetingStorage.getSlotVoteCount(meeting, dateStr, hour);
@@ -206,7 +206,23 @@ export const MeetingPage = () => {
                         ))}
                     </Box>
                 </Box>
-                <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, p: 2, maxWidth: '400px', margin: '0 auto', display: 'flex', gap: 1, flexDirection: 'column', zIndex: 10, borderRadius: 0 }}>
+                <Paper sx={{
+                    position: 'fixed',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    p: 2,
+                    maxWidth: '400px',
+                    margin: '0 auto',
+                    display: 'flex',
+                    gap: 1,
+                    flexDirection: 'column',
+                    zIndex: 10,
+                    borderRadius: 0,
+                    bgcolor: 'rgba(255, 255, 255, 0.9)',
+                    backdropFilter: 'blur(4px)',
+                    borderTop: '1px solid #eee'
+                }}>
                     <PrimaryButton label="Editar o meu voto" onClick={handleEditVote} />
                     <PrimaryButton label="Copiar ligazón" onClick={copyLink} sx={{ bgcolor: 'secondary.main' }} />
                 </Paper>
@@ -224,7 +240,7 @@ export const MeetingPage = () => {
 
     // Voting view
     return (
-        <Box sx={{ p: 2, pb: 10, height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ p: 2, height: '100dvh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
             {nameDialog}
             <Box sx={{ mb: 2 }}>
                 <Typography variant="h5" fontWeight="bold">{meeting.title}</Typography>
@@ -247,7 +263,7 @@ export const MeetingPage = () => {
                     {HOURS.map(hour => (
                         <Box key={`row-${hour}`} sx={{ display: 'contents' }}>
                             <Box sx={{ position: 'sticky', left: 0, bgcolor: 'white', p: 1, borderRight: '1px solid #eee', borderBottom: '1px solid #eee', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
-                                <Typography variant="caption" color="text.secondary">{hour}:00</Typography>
+                                <Typography variant="caption" color="text.secondary">{hour === 24 ? '00' : hour}:00</Typography>
                             </Box>
                             {meeting.dates.map(dateStr => {
                                 const isSelected = tempSlots.some(s => s.day === dateStr && s.hour === hour);
@@ -259,7 +275,19 @@ export const MeetingPage = () => {
                     ))}
                 </Box>
             </Box>
-            <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, p: 2, maxWidth: '400px', margin: '0 auto', display: 'flex', gap: 1, flexDirection: 'column', zIndex: 10 }}>
+            <Paper sx={{
+                p: 2,
+                mt: 'auto',
+                maxWidth: '400px',
+                width: '100%',
+                margin: '16px auto 0',
+                display: 'flex',
+                gap: 1,
+                flexDirection: 'column',
+                bgcolor: 'white',
+                borderTop: '1px solid #eee',
+                zIndex: 10
+            }}>
                 <PrimaryButton label={hasVoted ? "Actualizar o meu voto" : "Gardar o meu voto"} onClick={handleSaveVoteClick} disabled={tempSlots.length === 0} />
                 <PrimaryButton label="Copiar ligazón" onClick={copyLink} sx={{ bgcolor: 'secondary.main' }} />
             </Paper>
